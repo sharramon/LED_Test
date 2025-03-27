@@ -30,6 +30,14 @@ public class SceneManager : Singleton<SceneManager>
         mainUI.onZoomChanged -= OnSizeButtonPressed;
     }
 
+    public int GetZoomInt()
+    {
+        if(mainUI != null)
+            return mainUI.GetZoom();
+        
+        return 0; //0 being default
+    }
+
     private void OnVideoButtonPressed(int ind)
     {
         ledVideo.SetVideoClip(ind);
@@ -38,5 +46,10 @@ public class SceneManager : Singleton<SceneManager>
     private void OnSizeButtonPressed(int ind)
     {
         ledVideo.ChangeScreenSize(ind);
+    }
+
+    private void OnPictureButtonPressed(int ind)
+    {
+        ledVideo.SetImage(ind);
     }
 }

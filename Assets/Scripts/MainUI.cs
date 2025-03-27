@@ -12,6 +12,7 @@ public class MainUI : MonoBehaviour
     private int _zoomInt = 0;
     
     public Action<int> onVideoButtonPressed;
+    public Action<int> onPictureButtonPressed;
     public Action<int> onZoomChanged;
 
     private void Start()
@@ -24,6 +25,7 @@ public class MainUI : MonoBehaviour
         zoom.text = _zoomInt.ToString();
         return _zoomInt;
     }
+    public int GetZoom() => _zoomInt;
 
     public int AddZoomInt(int addValue)
     {
@@ -46,6 +48,11 @@ public class MainUI : MonoBehaviour
         onVideoButtonPressed?.Invoke(1);
     }
 
+    public void OnCookieButtonPressed()
+    {
+        onPictureButtonPressed?.Invoke(0);
+    }
+    
     public void OnZoomButtonPressed(int zoomValue)
     {
         AddZoomInt(zoomValue);
