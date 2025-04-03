@@ -21,12 +21,14 @@ public class SceneManager : Singleton<SceneManager>
     private void SubscribeToUIEvents()
     {
         mainUI.onVideoButtonPressed += OnVideoButtonPressed;
+        mainUI.onPictureButtonPressed += OnPictureButtonPressed;
         mainUI.onZoomChanged += OnSizeButtonPressed;
     }
 
     private void UnsubscribeFromUIEvents()
     {
         mainUI.onVideoButtonPressed -= OnVideoButtonPressed;
+        mainUI.onPictureButtonPressed -= OnPictureButtonPressed;
         mainUI.onZoomChanged -= OnSizeButtonPressed;
     }
 

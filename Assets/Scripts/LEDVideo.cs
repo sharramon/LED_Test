@@ -10,10 +10,10 @@ public class LEDVideo : MonoBehaviour
 {
     [Header("LED Size")] 
     [SerializeField] private Renderer renderer;
-    [FormerlySerializedAs("baseSize")] [SerializeField] private FloatPair baseVideoSize;
-    [FormerlySerializedAs("baseSize")] [SerializeField] private FloatPair baseImageSize;
-
-    private float baseDensity;
+    private Material mat;
+    [SerializeField] private FloatPair baseVideoSize;
+    [SerializeField] private FloatPair baseImageSize;
+    [SerializeField]private float baseDensity;
     
     [Header("Video Clip")]
     [SerializeField] private List<VideoClip> videoClips = new List<VideoClip>();
@@ -24,12 +24,12 @@ public class LEDVideo : MonoBehaviour
     [SerializeField] private List<Texture> images = new List<Texture>();
     
     private int currentClipIndex = 0;
-    private int currentImageIndex = 0;
+    private int currentImageIndex = -1;
 
     private void Start()
     {
         this.transform.localScale = new Vector3(baseVideoSize.x, baseVideoSize.y, 1);
-        Material mat  = renderer.material;
+        mat  = renderer.material;
         mat.SetFloat("TilingLEDX", baseDensity * baseVideoSize.x);
         mat.SetFloat("TilingLEDY", baseDensity * baseVideoSize.y);
     }
@@ -40,18 +40,15 @@ public class LEDVideo : MonoBehaviour
         
         if (index == currentClipIndex)
             return;
-        
-        if(index >= videoClips.Count)
+
+        if (index >= videoClips.Count)
             return;
-        
-        //change size
-        ChangeScreenSize(SceneManager.Instance.GetZoomInt());
         
         //set video clip
         currentClipIndex = index;
+        ChangeScreenSize(SceneManager.Instance.GetZoomInt());
         videoPlayer.clip = videoClips[index];
-        Material mat  = renderer.material;
-        mat.SetTexture("_BaseMape", renderTexture);
+        mat.SetTexture("_BaseMap", renderTexture);
         
         //play
         videoPlayer.Play();
@@ -68,19 +65,19 @@ public class LEDVideo : MonoBehaviour
         if (index >= images.Count)
             return;
         
-        ChangeScreenSize(SceneManager.Instance.GetZoomInt(), false);
+        currentImageIndex = index;
+        ChangeScreenSize(SceneManager.Instance.GetZoomInt());
         
         //set image
-        currentImageIndex = index;
-        Material mat  = renderer.material;
-        mat.SetTexture("_BaseMape", images[index]);
+        mat.SetTexture("_BaseMap", images[index]);
     }
 
-    public void ChangeScreenSize(int sizeFactor, bool isVideo = true)
+    public void ChangeScreenSize(int sizeFactor)
     {
         float multiplier = Mathf.Pow(2f, sizeFactor);
         float width, height;
-        if (isVideo)
+        
+        if (currentClipIndex != -1) //meaning if it's currently video
         {
             width = baseVideoSize.x * multiplier;
             height = baseVideoSize.y * multiplier;
@@ -94,8 +91,6 @@ public class LEDVideo : MonoBehaviour
         float yDensity = baseDensity * height;
         
         this.transform.localScale = new Vector3(width, height, 1);
-        
-        Material mat  = renderer.material;
         
         mat.SetFloat("TilingLEDX", xDensity);
         mat.SetFloat("TilingLEDY", yDensity);
