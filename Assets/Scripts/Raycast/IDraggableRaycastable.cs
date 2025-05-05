@@ -1,20 +1,15 @@
 // IDraggableRaycastable.cs
 using UnityEngine;
+using Oculus.Interaction; // for OVRHand
 
 public interface IDraggableRaycastable
 {
     /// <summary>
-    /// Called once, immediately when the user begins pinching this object.
+    /// Inject the ray origin (camera or controller) and the hand reference.
     /// </summary>
+    void SetDragContext(Transform raycastOrigin, OVRHand hand);
+
     void OnDragStart(Ray ray, RaycastHit hit);
-
-    /// <summary>
-    /// Called every frame while the user is pinching.
-    /// </summary>
     void OnDrag(Ray ray);
-
-    /// <summary>
-    /// Called once, when the user releases the pinch.
-    /// </summary>
     void OnDragEnd();
 }
