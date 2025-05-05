@@ -25,6 +25,9 @@ public class InputManager : Singleton<InputManager>
 
     private void OnButtonPressed()
     {
+        if (LEDSceneManager.Instance._currentState == SceneState.VR)
+            return;
+        
         isMoving = !isMoving;
         
         if(moveLEDScreen != null)
@@ -64,6 +67,12 @@ public class InputManager : Singleton<InputManager>
                     targetRotation,
                     rotationSpeed * Time.deltaTime
                 );
+            }
+
+            if (LEDSceneManager.Instance._currentState == SceneState.VR)
+            {
+                isMoving = false;
+                break;
             }
             
             yield return null;

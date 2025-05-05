@@ -13,6 +13,7 @@ public class MainUI : MonoBehaviour
     
     public Action<int> onVideoButtonPressed;
     public Action<int> onPictureButtonPressed;
+    public Action onVRButtonPressed;
     public Action<int> onZoomChanged;
 
     private void Start()
@@ -51,6 +52,11 @@ public class MainUI : MonoBehaviour
     public void OnCookieButtonPressed()
     {
         onPictureButtonPressed?.Invoke(0);
+    }
+
+    public void OnVRButtonPressed()
+    {
+        onVRButtonPressed?.Invoke();
     }
     
     public void OnZoomButtonPressed(int zoomValue)
