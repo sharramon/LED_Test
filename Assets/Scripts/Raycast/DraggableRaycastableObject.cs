@@ -55,65 +55,37 @@ public class DraggableRaycastableObject : RaycastableObject, IDraggableRaycastab
 
     public void OnDrag(Ray ray)
     {
-        var camPos  = Camera.main.transform.position;
-        var grabPos = _grabPoint.position;
-        var camFlat = new Vector3(camPos.x, grabPos.y, camPos.z);
+        // cache positions
+        Vector3 camPos   = Camera.main.transform.position;
+        Vector3 grabPos  = _grabPoint.position;
+        Vector3 camFlat  = new Vector3(camPos.x, grabPos.y, camPos.z);
 
-        var camXZ   = new Vector2(camPos.x, camPos.z);
-        var handXZ  = new Vector2(_hand.transform.position.x, _hand.transform.position.z);
-        float currentHandDist = Vector2.Distance(camXZ, handXZ);
-        float delta           = _initialHandDistanceXZ - currentHandDist;
-        float dt              = Time.deltaTime;
+        // compute how much the hand moved since grab
+        var camXZ         = new Vector2(camPos.x, camPos.z);
+        var handXZ        = new Vector2(_hand.transform.position.x, _hand.transform.position.z);
+        float currentHand = Vector2.Distance(camXZ, handXZ);
+        float delta       = _initialHandDistanceXZ - currentHand;
+        float dt          = Time.deltaTime;
 
-        if (delta > pullTriggerDistance)
-        {
-            // Pull
-            float step   = moveSpeed * dt + acceleration * dt * dt;
-            Vector3 dir  = (camFlat - grabPos).normalized;
-            Vector3 newP = grabPos + dir * step;
+        // adjust your desired radius
+        float step             = moveSpeed * dt + acceleration * dt * dt;
+        float desiredDistance  = _initialGrabDistance;
 
-            float distFlat = Vector2.Distance(
-                new Vector2(newP.x, newP.z),
-                new Vector2(camFlat.x, camFlat.z)
-            );
-            if (distFlat < minPullDistance)
-                newP = camFlat + dir * minPullDistance;
-
-            _grabPoint.position       = newP;
-            _initialGrabDistance      = Vector3.Distance(
-                _raycastOrigin.position,
-                new Vector3(newP.x, _initialGrabY, newP.z)
-            );
-        }
+        if (delta >  pullTriggerDistance)
+            desiredDistance = Mathf.Max(_initialGrabDistance - step, minPullDistance);
         else if (delta < -pushTriggerDistance)
-        {
-            // Push
-            float step   = moveSpeed * dt + acceleration * dt * dt;
-            Vector3 dir  = (grabPos - camFlat).normalized;
-            Vector3 newP = grabPos + dir * step;
+            desiredDistance = Mathf.Min(_initialGrabDistance + step, maxPushDistance);
 
-            float distFlat2 = Vector2.Distance(
-                new Vector2(newP.x, newP.z),
-                new Vector2(camFlat.x, camFlat.z)
-            );
-            if (distFlat2 > maxPushDistance)
-                newP = camFlat + dir * maxPushDistance;
+        _initialGrabDistance = desiredDistance;
 
-            _grabPoint.position  = newP;
-            _initialGrabDistance = Vector3.Distance(
-                _raycastOrigin.position,
-                new Vector3(newP.x, _initialGrabY, newP.z)
-            );
-        }
-        
-        // Orbit
-        var flatFwd = new Vector3(_raycastOrigin.forward.x, 0f, _raycastOrigin.forward.z).normalized;
-        var orbitPt = _raycastOrigin.position + flatFwd * _initialGrabDistance;
-        var target  = new Vector3(orbitPt.x, _initialGrabY, orbitPt.z);
+        // always orbit at that radius around camera forward
+        Vector3 flatFwd     = new Vector3(_raycastOrigin.forward.x, 0f, _raycastOrigin.forward.z).normalized;
+        Vector3 orbitCenter = _raycastOrigin.position + flatFwd * _initialGrabDistance;
+        Vector3 targetPos   = new Vector3(orbitCenter.x, _initialGrabY, orbitCenter.z);
 
         _grabPoint.position = Vector3.MoveTowards(
             _grabPoint.position,
-            target,
+            targetPos,
             lerpSpeed * dt
         );
     }
