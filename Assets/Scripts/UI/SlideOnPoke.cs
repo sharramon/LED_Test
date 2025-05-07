@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using Oculus.Interaction;
 using System.Linq;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(PokeInteractable))]
 [RequireComponent(typeof(InteractableUnityEventWrapper))]
@@ -12,6 +13,8 @@ public class SlideOnPoke : MonoBehaviour
     [SerializeField] private float maxZ =  0.5f;
     [SerializeField] private bool invertNormalized = false;
     [SerializeField] private TMP_Text slideValue;
+    
+    public UnityEvent<float> onSliderValueChanged;
 
     /// <summary>
     /// Normalized slide position between 0 (at minZ) and 1 (at maxZ), or reversed if invertNormalized is true.
@@ -35,6 +38,7 @@ public class SlideOnPoke : MonoBehaviour
         if (_isSelected)
         {
             NormalizedSlide = SlideAlongZ();
+            onSliderValueChanged?.Invoke(NormalizedSlide);
             slideValue.text = NormalizedSlide.ToString();
         }
     }

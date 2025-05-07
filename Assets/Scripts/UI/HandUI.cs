@@ -4,7 +4,10 @@ using Oculus.Interaction; // for OVRMicrogestureEventSource, OVRHand
 
 public class HandUI : MonoBehaviour
 {
-    [SerializeField] private GameObject               m_UIObject;
+    [SerializeField] private GameObject m_UIObject;
+    [SerializeField] private UIHandler uiHandler;
+    
+    [Header("UI Rotation")]
     [SerializeField] private float                    m_rotateDegrees = 120f;
     [SerializeField] private float                    m_rotateTime    = 0.5f;
     [SerializeField] private OVRMicrogestureEventSource m_gestureSource;
