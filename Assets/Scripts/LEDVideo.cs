@@ -95,6 +95,34 @@ public class LEDVideo : MonoBehaviour
         mat.SetFloat("TilingLEDX", xDensity);
         mat.SetFloat("TilingLEDY", yDensity);
     }
+    
+    public void ChangeScreenSizeNormalized(float t)
+    {
+        // map t∈[0,1] to sizeFactor∈[–2,2]
+        float sizeFactor = Mathf.Lerp(-2f, 2f, t);
+
+        // now exactly as before
+        float multiplier = Mathf.Pow(2f, sizeFactor);
+
+        float width, height;
+        if (currentClipIndex != -1)
+        {
+            width  = baseVideoSize.x * multiplier;
+            height = baseVideoSize.y * multiplier;
+        }
+        else
+        {
+            width  = baseImageSize.x * multiplier;
+            height = baseImageSize.y * multiplier;
+        }
+
+        transform.localScale = new Vector3(width, height, 1);
+
+        float xDensity = baseDensity * width;
+        float yDensity = baseDensity * height;
+        mat.SetFloat("TilingLEDX", xDensity);
+        mat.SetFloat("TilingLEDY", yDensity);
+    }
 }
 
 [System.Serializable]
