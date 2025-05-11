@@ -23,7 +23,8 @@ public class DraggableRaycastableObject : RaycastableObject, IDraggableRaycastab
     [SerializeField] private float moveSpeed           = 1f;
     [SerializeField] private float acceleration        = 0.5f;
     [SerializeField] private float lerpSpeed           = 10f;
-
+    
+    Transform _originalParent;
     /// <summary>
     /// Called by XRRaycaster to inject its ray origin and hand reference.
     /// </summary>
@@ -35,6 +36,9 @@ public class DraggableRaycastableObject : RaycastableObject, IDraggableRaycastab
 
     public void OnDragStart(Ray ray, RaycastHit hit)
     {
+        // remember where we lived before grab
+        _originalParent = transform.parent;
+        
         _grabPoint = new GameObject($"{name}_GrabPoint").transform;
         _grabPoint.position = hit.point;
         transform.SetParent(_grabPoint, true);
@@ -92,7 +96,8 @@ public class DraggableRaycastableObject : RaycastableObject, IDraggableRaycastab
 
     public void OnDragEnd()
     {
-        transform.SetParent(null, true);
+        // put it back where it was (if _originalParent is null, that's fine)
+        transform.SetParent(_originalParent, true);
         if (_grabPoint != null)
             Destroy(_grabPoint.gameObject);
     }

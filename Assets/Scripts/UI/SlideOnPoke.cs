@@ -1,4 +1,5 @@
 // SlideOnPoke.cs
+using System;
 using UnityEngine;
 using TMPro;
 using Oculus.Interaction;
@@ -14,7 +15,7 @@ public class SlideOnPoke : MonoBehaviour
     [SerializeField] private bool invertNormalized = false;
     [SerializeField] private TMP_Text slideValue;
     
-    public UnityEvent<float> onSliderValueChanged;
+    public Action<float> onSliderValueChanged;
 
     /// <summary>
     /// Normalized slide position between 0 (at minZ) and 1 (at maxZ), or reversed if invertNormalized is true.

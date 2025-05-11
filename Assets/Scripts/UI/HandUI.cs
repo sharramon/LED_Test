@@ -11,6 +11,11 @@ public class HandUI : MonoBehaviour
     [SerializeField] private float                    m_rotateDegrees = 120f;
     [SerializeField] private float                    m_rotateTime    = 0.5f;
     [SerializeField] private OVRMicrogestureEventSource m_gestureSource;
+    
+    [Header("UI Active")]
+    [SerializeField] private float thumbTapCooldown = 0.5f;
+
+    private bool _canToggle = true;
 
     // Coroutine handle for the current rotation (or null if none)
     private Coroutine _rotateCoroutine;
@@ -95,7 +100,16 @@ public class HandUI : MonoBehaviour
 
     private void ToggleMenu()
     {
-        if (m_UIObject != null)
-            m_UIObject.SetActive(!m_UIObject.activeSelf);
+        if(_canToggle)
+            StartCoroutine(ThumbTapToggle());
+    }
+    
+    private IEnumerator ThumbTapToggle()
+    {
+        Debug.Log("startToggle");
+        _canToggle = false;                  // block further toggles
+        m_UIObject.SetActive(!m_UIObject.activeSelf);
+        yield return new WaitForSeconds(thumbTapCooldown);
+        _canToggle = true;                   // re-enable tapping
     }
 }

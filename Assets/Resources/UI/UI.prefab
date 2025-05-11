@@ -4728,7 +4728,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2564302910380456672}
         m_TargetAssemblyTypeName: UIHandler, Assembly-CSharp
-        m_MethodName: OnSliderUpdated
+        m_MethodName: OnSizeSliderUpdated
         m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

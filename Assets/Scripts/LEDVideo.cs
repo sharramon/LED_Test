@@ -46,30 +46,13 @@ public class LEDVideo : MonoBehaviour
         
         //set video clip
         currentClipIndex = index;
-        ChangeScreenSize(LEDSceneManager.Instance.GetZoomInt());
+        //ChangeScreenSize(LEDSceneManager.Instance.GetZoomInt());
         videoPlayer.clip = videoClips[index];
         mat.SetTexture("_BaseMap", renderTexture);
         
         //play
         videoPlayer.Play();
         videoPlayer.isLooping = true;
-    }
-
-    public void SetImage(int index)
-    {
-        currentClipIndex = -1; //bad workaround for video to image
-
-        if (index == currentImageIndex)
-            return;
-
-        if (index >= images.Count)
-            return;
-        
-        currentImageIndex = index;
-        ChangeScreenSize(LEDSceneManager.Instance.GetZoomInt());
-        
-        //set image
-        mat.SetTexture("_BaseMap", images[index]);
     }
 
     public void ChangeScreenSize(int sizeFactor)

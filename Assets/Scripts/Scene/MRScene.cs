@@ -3,10 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MRScene : MonoBehaviour
+public class MRScene : LEDSceneBase
 {
     [SerializeField] private LEDVideo ledVideo;
-    [SerializeField] private GameObject mrScene;
 
     private void OnEnable()
     {
@@ -20,13 +19,13 @@ public class MRScene : MonoBehaviour
 
     void SubscribeEvents()
     {
-        EventBus.Subscribe<float>(UIEventType.Slider, ChangeScreenSize);
+        EventBus.Subscribe<float>(UIEventType.SizeSlider, ChangeScreenSize);
         EventBus.Subscribe<int>  (UIEventType.VideoButton, ChangeLEDVideo);
     }
 
     void UnsubscribeEvents()
     {
-        EventBus.Unsubscribe<float>(UIEventType.Slider, ChangeScreenSize);
+        EventBus.Unsubscribe<float>(UIEventType.SizeSlider, ChangeScreenSize);
         EventBus.Unsubscribe<int>  (UIEventType.VideoButton, ChangeLEDVideo);
     }
     
@@ -38,7 +37,10 @@ public class MRScene : MonoBehaviour
 
     public void ChangeLEDVideo(int videoIndex)
     {
-        if(ledVideo != null && mrScene.activeInHierarchy)
+        if(LEDSceneManager.Instance._currentState != SceneState.MR)
+            return;
+        
+        if(ledVideo != null)
         {
             ledVideo.SetVideoClip(videoIndex);
         }

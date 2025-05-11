@@ -4,10 +4,9 @@ using System.Collections.Generic;
 public enum UIEventType
 {
     StateButton,
-    Slider,
-    VideoButton,
-    Volume,      // add new kinds here
-    /* … */
+    SizeSlider,
+    SpeedSlider,
+    VideoButton
 }
 
 public static class EventBus

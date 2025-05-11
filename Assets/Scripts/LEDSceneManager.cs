@@ -11,15 +11,8 @@ public enum SceneState
 }
 public class LEDSceneManager : Singleton<LEDSceneManager>
 {
-    [Header("MR")]
-    [SerializeField] MainUI mainUI;
-    [SerializeField] LEDVideo ledVideo;
-    [SerializeField] private GameObject mrObjects;
-    
-    [Header("VR")]
-    [SerializeField] VRUI VRUI;
-
-    [SerializeField] private GameObject vrObjects;
+    [Header("Scenes")]
+    [SerializeField] private List<LEDSceneBase> scenes = new List<LEDSceneBase>();
     
     private SceneState currentState = SceneState.MR;
     public SceneState _currentState { get => currentState; }
@@ -35,62 +28,28 @@ public class LEDSceneManager : Singleton<LEDSceneManager>
 
     private void SubscribeToUIEvents()
     {
-        mainUI.onVideoButtonPressed += OnVideoButtonPressed;
-        mainUI.onPictureButtonPressed += OnPictureButtonPressed;
-        mainUI.onZoomChanged += OnSizeButtonPressed;
-        mainUI.onVRButtonPressed += OnVRButtonPressed;
-        VRUI.onMRButtonPressed += OnMRButtonPressed;
+        EventBus.Subscribe<int>(UIEventType.StateButton, OnStateButtonPressed);
     }
 
     private void UnsubscribeFromUIEvents()
     {
-        mainUI.onVideoButtonPressed -= OnVideoButtonPressed;
-        mainUI.onPictureButtonPressed -= OnPictureButtonPressed;
-        mainUI.onZoomChanged -= OnSizeButtonPressed;
-        mainUI.onVRButtonPressed -= OnVRButtonPressed;
-        VRUI.onMRButtonPressed -= OnMRButtonPressed;
+        EventBus.Unsubscribe<int>(UIEventType.StateButton, OnStateButtonPressed);
     }
-
-    public int GetZoomInt()
+    
+    private void OnStateButtonPressed(int stateInd)
     {
-        if(mainUI != null)
-            return mainUI.GetZoom();
+        currentState = (SceneState)stateInd;
+        TurnAllStatesOff();
         
-        return 0; //0 being default
+        Debug.Log($"Turning scene state {currentState} with index {stateInd}");
+        scenes[stateInd].SetObjectState(true);
     }
 
-    private void OnVideoButtonPressed(int ind)
+    private void TurnAllStatesOff()
     {
-        ledVideo.SetVideoClip(ind);
-    }
-
-    private void OnSizeButtonPressed(int ind)
-    {
-        ledVideo.ChangeScreenSize(ind);
-    }
-
-    private void OnPictureButtonPressed(int ind)
-    {
-        ledVideo.SetImage(ind);
-    }
-
-    private void OnVRButtonPressed()
-    {
-        currentState = SceneState.VR;
-        
-        mrObjects.SetActive(false);
-        mainUI.gameObject.SetActive(false);
-        vrObjects.SetActive(true);
-        VRUI.gameObject.SetActive(true);
-    }
-
-    private void OnMRButtonPressed()
-    {
-        currentState = SceneState.MR;
-        
-        mrObjects.SetActive(true);
-        mainUI.gameObject.SetActive(true);
-        vrObjects.SetActive(false);
-        VRUI.gameObject.SetActive(false);
+        foreach (var scene in scenes)
+        {
+            scene.SetObjectState(false);
+        }
     }
 }
