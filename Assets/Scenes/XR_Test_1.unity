@@ -4445,7 +4445,7 @@ MonoBehaviour:
   hoverColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   selectedColor: {r: 0, g: 1, b: 0, a: 1}
   renderObject: {fileID: 398171450}
-  spinSpeed: 90
+  spinSpeed: 50
   bufferDistance: 0.2
 --- !u!64 &398171453
 MeshCollider:
@@ -13949,86 +13949,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 403529011}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1154306462
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1154306465}
-  - component: {fileID: 1154306464}
-  - component: {fileID: 1154306463}
-  m_Layer: 0
-  m_Name: Controls
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1154306463
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1154306462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 430ca1674c514734bb3a6442938b886f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UIObject: {fileID: 307044229}
-  uiHandler: {fileID: 0}
-  m_rotateDegrees: 120
-  m_rotateTime: 0.5
-  m_gestureSource: {fileID: 1605864778}
---- !u!114 &1154306464
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1154306462}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56daad18ab3ab0b439f4cd94a6575635, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftGestureSource: {fileID: 1605864778}
-  rightGestureSource: {fileID: 811419120}
-  leftGestureLabel: {fileID: 0}
-  rightGestureLabel: {fileID: 0}
-  gestureShowDuration: 1.5
-  leftArrowL: {fileID: 0}
-  rightArrowL: {fileID: 0}
-  upArrowL: {fileID: 0}
-  downArrowL: {fileID: 0}
-  selectIconL: {fileID: 0}
-  leftArrowR: {fileID: 0}
-  rightArrowR: {fileID: 0}
-  upArrowR: {fileID: 0}
-  downArrowR: {fileID: 0}
-  selectIconR: {fileID: 0}
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
-  highlightColor: {r: 0, g: 0, b: 1, a: 1}
-  highlightDuration: 0.5
---- !u!4 &1154306465
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1154306462}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1159106103
 GameObject:
   m_ObjectHideFlags: 0
@@ -22411,9 +22331,9 @@ MonoBehaviour:
   videos:
   - {fileID: 1298337572}
   - {fileID: 834556588}
-  rightHandAnchor: {fileID: 0}
-  gameUI: {fileID: 0}
-  moveSpeed: 1
+  rightHandAnchor: {fileID: 658800625}
+  gameUI: {fileID: 307044229}
+  baseMoveSpeed: 1
 --- !u!114 &1881898894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23763,6 +23683,7 @@ MonoBehaviour:
   m_rotateDegrees: 120
   m_rotateTime: 0.5
   m_gestureSource: {fileID: 1605864778}
+  thumbTapCooldown: 0.5
 --- !u!1 &2015749228
 GameObject:
   m_ObjectHideFlags: 0
@@ -25697,7 +25618,6 @@ SceneRoots:
   - {fileID: 718669734}
   - {fileID: 21336863}
   - {fileID: 1082343716}
-  - {fileID: 1154306465}
   - {fileID: 1764791407}
   - {fileID: 180222972}
   - {fileID: 2010657202}
